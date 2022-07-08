@@ -11,14 +11,14 @@ class SongViewModel: ObservableObject {
     
     // MARK: - CRUD
     
-    func createSong(playlist: Playlist, title: String, artist: String) {
-        let newSong = Song(title: title, artist: artist)
-        playlist.songs.append(newSong)
+    func createSong(song: Song, playlist: Playlist, playlistViewModel: PlaylistViewModel) {
+      guard let index = playlistViewModel.playlists.firstIndex(of: playlist) else { return }
+      playlistViewModel.playlists[index].songs.append(song)
     }
 
-    func deleteSong(playlist: Playlist, index: IndexSet) {
-        let songToDelete = playlist.songs[index]
-        playlist.songs.remove(songToDelete)
+    func deleteSong(playlist: Playlist, playlistViewModel: PlaylistViewModel, at indexSet: IndexSet) {
+      guard let index = playlistViewModel.playlists.firstIndex(of: playlist) else { return }
+      playlistViewModel.playlists[index].songs.remove(atOffsets: indexSet)
     }
     
 }

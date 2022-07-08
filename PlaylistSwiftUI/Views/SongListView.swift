@@ -19,7 +19,13 @@ struct SongListView: View {
     var body: some View {
         VStack {
             TextField(" Enter title...", text: $title)
+            Rectangle()
+                .frame(height: 1.5)
+                .padding(.horizontal)
             TextField(" Enter artist...", text: $artist)
+            Rectangle()
+                .frame(height: 1.5)
+                .padding(.horizontal)
             
             List {
                 ForEach(playlist.songs) {
@@ -40,7 +46,9 @@ struct SongListView: View {
                         Image(systemName: "play.circle")
                     }
                 }
-                .onDelete(perform: viewModel.deleteSong(playlist: playlist, index:))
+                .onDelete { indexSet in
+                    viewModel.deleteSong(playlist: playlist, playlistViewModel: playlistViewModel, at: indexSet)
+                }
             }
         }
         .navigationTitle("Songs")
@@ -48,7 +56,7 @@ struct SongListView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    viewModel.createSong(playlist: playlist, title: title, artist: artist)
+                    viewModel.createSong(song: Song(title: title, artist: artist), playlist: playlist, playlistViewModel: playlistViewModel)
                     title = ""
                     artist = ""
                 } label: {
